@@ -7,6 +7,7 @@ import React from 'react';
 import {create} from 'react-test-renderer';
 import App from '../src/screens/App';
 import Profile from '../src/database/Profile.database';
+import Realm from 'realm';
 
 const config = {
   schema: [Profile],
