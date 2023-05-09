@@ -4,11 +4,36 @@
 
 import 'react-native';
 import React from 'react';
-import App from '../App';
+import {create} from 'react-test-renderer';
+import App from '../src/screens/App';
+import Profile from '../src/database/Profile.database';
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
+const config = {
+  schema: [Profile],
+};
+let realm: any;
 
-it('renders correctly', () => {
-  renderer.create(<App />);
+describe('Test App', () => {
+  beforeEach(async () => {
+    realm = await Realm.open(config);
+  });
+
+  afterEach(() => {
+    if (!realm.isClosed) {
+      realm.close();
+    }
+    if (config) {
+      Realm.deleteFile(config);
+    }
+  });
+
+  test('Close a Realm', async () => {
+    expect(realm.isClosed).toBe(false);
+    realm.close();
+    expect(realm.isClosed).toBe(true);
+  });
+
+  test('renders correctly', () => {
+    create(<App />);
+  });
 });
